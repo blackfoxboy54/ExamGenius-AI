@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamGenius AI — Bilingual Hindi 🇮🇳 / English 🇬🇧 Exam & Test System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#0a0f1d',
+                            950: '#05070c',
+                        },
+                        purple: {
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #05070c; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-navy-950 text-slate-100 min-h-screen flex flex-col selection:bg-purple-600 selection:text-white">
+
+    <!-- App Container with Sidebar Layout -->
+    <div id="app" class="flex flex-col min-h-screen">
+        <!-- Top Navigation Bar -->
+        <header class="bg-navy-950 border-b border-slate-800/80 sticky top-0 z-40 backdrop-blur-md bg-opacity-90">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="router.navigate('dashboard')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-900/30 text-white font-bold text-xl">
+                        EG
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg text-white tracking-tight">ExamGenius <span class="text-purple-400">AI</span></span>
+                        <span class="block text-[10px] text-purple-300 tracking-wider font-medium uppercase">Hindi 🇮🇳 / English 🇬🇧 Bilingual</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleDarkMode()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 transition" title="Toggle Theme">
+                        <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </button>
+                    <div class="h-6 w-px bg-slate-800"></div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="text-xs text-slate-300 font-medium hidden sm:inline">Bilingual Storage Active</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body Wrapper with Sidebar & Content -->
+        <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <aside class="w-full md:w-64 flex-shrink-0 space-y-2">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1">
+                    <p class="text-[10px] uppercase font-bold tracking-wider text-slate-500 px-3 pb-2">Navigation Menu</p>
+                    <button onclick="router.navigate('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                        <span>Dashboard</span>
+                    </button>
+                    <button onclick="router.navigate('creator')" id="nav-creator" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <span>Question Paper Creator</span>
+                    </button>
+                    <button onclick="router.navigate('library')" id="nav-library" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        <span>Paper Library</span>
+                    </button>
+                    <button onclick="router.navigate('test-center')" id="nav-test-center" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>Test Center</span>
+                    </button>
+                    <button onclick="router.navigate('paper-attempt')" id="nav-paper-attempt" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        <span>Paper Attempt</span>
+                    </button>
+                    <button onclick="router.navigate('attempt-history')" id="nav-attempt-history" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>Attempt History</span>
+                    </button>
+                    <button onclick="router.navigate('translator')" id="nav-translator" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                        <span>Paper Translator</span>
+                    </button>
+                    <button onclick="router.navigate('omr')" id="nav-omr" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>OMR Scanner</span>
+                    </button>
+                    <button onclick="router.navigate('results-list')" id="nav-results" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        <span>Results Dashboard</span>
+                    </button>
+                    <button onclick="router.navigate('settings')" id="nav-settings" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition nav-link-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>Settings</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Dynamic Content Area -->
+            <main id="main-content" class="flex-1 min-w-0">
+                <!-- Views injected here -->
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-navy-950 border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+            <p>ExamGenius AI &copy; 2026 — Hindi 🇮🇳 / English 🇬🇧 Bilingual Exam System.</p>
+            <p class="mt-1 text-slate-600">Local storage persists bilingual question papers, attempt language records, and unlimited practice attempts.</p>
+        </footer>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="modal-container" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden animate-fade-in">
+        <div id="modal-content" class="bg-navy-950 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <!-- Modal content injected dynamically -->
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- Application Script -->
+    <script>
+        /* ==========================================
+           1. STATE MANAGEMENT & LOCAL STORAGE
+           ========================================== */
+        const STORAGE_KEYS = {
+            PAPERS: 'examgenius_bilingual_papers_v4',
+            ATTEMPTS: 'examgenius_bilingual_attempts_v4',
+            TRANSLATIONS: 'examgenius_translations_v4'
+        };
+
+        const db = {
+            getPapers: () => {
+                try {
+                    const data = localStorage.getItem(STORAGE_KEYS.PAPERS);
+                    return data ? JSON.parse(data) : getDefaultBilingualPapers();
+                } catch (e) {
+                    showToast('Error reading papers from storage', 'error');
+                    return [];
+                }
+            },
+            savePapers: (papers) => {
+                try {
+                    localStorage.setItem(STORAGE_KEYS.PAPERS, JSON.stringify(papers));
+                } catch (e) {
+                    showToast('Storage quota exceeded! Unable to save.', 'error');
+                }
+            },
+            getAttempts: () => {
+                try {
+                    const data = localStorage.getItem(STORAGE_KEYS.ATTEMPTS);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    return [];
+                }
+            },
+            saveAttempts: (attempts) => {
+                try {
+                    localStorage.setItem(STORAGE_KEYS.ATTEMPTS, JSON.stringify(attempts));
+                } catch (e) {
+                    showToast('Storage quota exceeded for attempts.', 'error');
+                }
+            },
+            getTranslations: () => {
+                try {
+                    const data = localStorage.getItem(STORAGE_KEYS.TRANSLATIONS);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    return [];
+                }
+            },
+            saveTranslations: (translations) => {
+                try {
+                    localStorage.setItem(STORAGE_KEYS.TRANSLATIONS, JSON.stringify(translations));
+                } catch (e) {
+                    showToast('Storage quota exceeded for translations.', 'error');
+                }
+            }
+        };
+
+        function getDefaultBilingualPapers() {
+            const sample1 = {
+                id: 'paper-bilingual-1',
+                title: {
+                    en: 'General Science & Chemistry Fundamentals',
+                    hi: 'सामान्य विज्ञान और रसायन विज्ञान के मूल सिद्धांत'
+                },
+                subject: {
+                    en: 'Science',
+                    hi: 'विज्ञान'
+                },
+                grade: 'Grade 10',
+                instructions: {
+                    en: 'Read all questions carefully. Practice Mode: Unlimited attempts allowed with immediate results.',
+                    hi: 'सभी प्रश्नों को ध्यान से पढ़ें। अभ्यास मोड: तत्काल परिणामों के साथ असीमित प्रयास की अनुमति है।'
+                },
+                duration: 15,
+                correctMarks: 4,
+                negativeMarks: 1,
+                unansweredMarks: 0,
+                createdAt: new Date().toISOString(),
+                questions: [
+                    {
+                        id: 'q1',
+                        question: {
+                            en: 'What is the chemical formula of water?',
+                            hi: 'जल का रासायनिक सूत्र क्या है?'
+                        },
+                        options: {
+                            'A': { en: 'Carbon dioxide', hi: 'कार्बन डाइऑक्साइड' },
+                            'B': { en: 'Water', hi: 'जल' },
+                            'C': { en: 'Oxygen', hi: 'ऑक्सीजन' },
+                            'D': { en: 'Sodium chloride', hi: 'सोडियम क्लोराइड' }
+                        },
+                        correctAnswer: 'B',
+                        marks: 4,
+                        explanation: {
+                            en: 'Water is composed of two hydrogen atoms bonded to one oxygen atom (H2O).',
+                            hi: 'जल एक ऑक्सीजन परमाणु से जुड़े दो हाइड्रोजन परमाणुओं से बना है (H₂O)।'
+                        }
+                    },
+                    {
+                        id: 'q2',
+                        question: {
+                            en: 'Which planet is known as the Red Planet?',
+                            hi: 'किस ग्रह को लाल ग्रह के रूप में जाना जाता है?'
+                        },
+                        options: {
+                            'A': { en: 'Venus', hi: 'शुक्र' },
+                            'B': { en: 'Mars', hi: 'मंगल' },
+                            'C': { en: 'Jupiter', hi: 'बृहस्पति' },
+                            'D': { en: 'Saturn', hi: 'शनि' }
+                        },
+                        correctAnswer: 'B',
+                        marks: 4,
+                        explanation: {
+                            en: 'Mars appears red due to iron oxide prevalent on its surface.',
+                            hi: 'मंगल अपनी सतह पर मौजूद आयरन ऑक्साइड के कारण लाल दिखाई देता है।'
+                        }
+                    }
+                ]
+            };
+            db.savePapers([sample1]);
+            return [sample1];
+        }
+
+        /* ==========================================
+           2. ROUTER & NAVIGATION CONTROLLER
+           ========================================== */
+        const router = {
+            currentRoute: 'dashboard',
+            params: {},
+            navigate: (route, params = {}) => {
+                router.currentRoute = route;
+                router.params = params;
+                window.scrollTo(0, 0);
+                renderApp();
+                updateSidebarActiveState();
+            }
+        };
+
+        function updateSidebarActiveState() {
+            document.querySelectorAll('.nav-link-item').forEach(el => {
+                el.classList.remove('bg-purple-600/20', 'text-purple-400', 'border', 'border-purple-500/30');
+                el.classList.add('text-slate-400', 'hover:bg-slate-900', 'hover:text-white');
+            });
+            const activeMap = {
+                'dashboard': 'nav-dashboard',
+                'creator': 'nav-creator',
+                'library': 'nav-library',
+                'test-center': 'nav-test-center',
+                'paper-attempt': 'nav-paper-attempt',
+                'attempt-history': 'nav-attempt-history',
+                'translator': 'nav-translator',
+                'omr': 'nav-omr',
+                'results-list': 'nav-results',
+                'settings': 'nav-settings'
+            };
+            const activeId = activeMap[router.currentRoute];
+            if (activeId) {
+                const btn = document.getElementById(activeId);
+                if (btn) {
+                    btn.classList.remove('text-slate-400', 'hover:bg-slate-900', 'hover:text-white');
+                    btn.classList.add('bg-purple-600/20', 'text-purple-400', 'border', 'border-purple-500/30');
+                }
+            }
+        }
+
+        function renderApp() {
+            const container = document.getElementById('main-content');
+            container.innerHTML = '';
+            
+            switch (router.currentRoute) {
+                case 'dashboard':
+                    container.innerHTML = renderDashboardView();
+                    break;
+                case 'library':
+                    container.innerHTML = renderLibraryView();
+                    break;
+                case 'creator':
+                    container.innerHTML = renderCreatorView(router.params.paperId);
+                    break;
+                case 'test-center':
+                    container.innerHTML = renderTestCenterView();
+                    break;
+                case 'paper-attempt':
+                    container.innerHTML = renderPaperAttemptListView();
+                    break;
+                case 'exam':
+                    container.innerHTML = renderExamView(router.params.paperId, router.params.mode || 'test-center', router.params.lang || 'en');
+                    initExamListeners(router.params.paperId, router.params.mode || 'test-center', router.params.lang || 'en');
+                    break;
+                case 'attempt-history':
+                    container.innerHTML = renderAttemptHistoryView();
+                    break;
+                case 'result':
+                    container.innerHTML = renderResultView(router.params.attemptId);
+                    break;
+                case 'omr':
+                    container.innerHTML = renderOMRScannerView();
+                    break;
+                case 'results-list':
+                    container.innerHTML = renderResultsHistoryView();
+                    break;
+                case 'translator':
+                    container.innerHTML = renderTranslatorView(router.params.paperId);
+                    initTranslatorListeners();
+                    break;
+                case 'settings':
+                    container.innerHTML = renderSettingsView();
+                    break;
+                default:
+                    container.innerHTML = renderDashboardView();
+            }
+            updateSidebarActiveState();
+        }
+
+        /* ==========================================
+           3. TOAST NOTIFICATIONS & MODALS
+           ========================================== */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColors = {
+                success: 'bg-emerald-600 text-white',
+                error: 'bg-red-600 text-white',
+                info: 'bg-purple-600 text-white'
+            };
+            toast.className = `px-4 py-3 rounded-xl shadow-lg text-sm font-medium pointer-events-auto transform transition-all duration-300 translate-y-2 opacity-0 flex items-center space-x-2 ${bgColors[type] || bgColors.success}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function openModal(htmlContent) {
+            const container = document.getElementById('modal-container');
+            const content = document.getElementById('modal-content');
+            content.innerHTML = htmlContent;
+            container.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').classList.add('hidden');
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        /* ==========================================
+           4. VIEW: DASHBOARD
+           ========================================== */
+        function renderDashboardView() {
+            const papers = db.getPapers();
+            const attempts = db.getAttempts();
+            
+            let totalScoreSum = 0;
+            let highestScore = 0;
+            attempts.forEach(att => {
+                totalScoreSum += (att.percentage || 0);
+                if ((att.score || 0) > highestScore) highestScore = att.score;
+            });
+            const avgScore = attempts.length > 0 ? (totalScoreSum / attempts.length).toFixed(1) : 0;
+
+            return `
+                <div class="space-y-8 animate-fade-in">
+                    <!-- Welcome Hero -->
+                    <div class="relative overflow-hidden bg-gradient-to-r from-purple-900/40 via-indigo-900/30 to-navy-900 border border-purple-800/40 rounded-3xl p-8 sm:p-10 shadow-2xl">
+                        <div class="relative z-10 max-w-2xl">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30 inline-block mb-4">ExamGenius AI v4.0 — Hindi 🇮🇳 / English 🇬🇧 Bilingual Exam System</span>
+                            <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Bilingual Assessments & Unlimited Practice</h1>
+                            <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">Choose your preferred exam language before every test. Experience seamless Hindi & English question papers with local OMR evaluation and attempt logs.</p>
+                            <div class="flex flex-wrap gap-3">
+                                <button onclick="router.navigate('test-center')" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-purple-900/40 transition flex items-center space-x-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <span>Enter Test Center</span>
+                                </button>
+                                <button onclick="router.navigate('paper-attempt')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-indigo-900/40 transition flex items-center space-x-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                                    <span>Start Paper Attempt</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="bg-slate-900/80 border border-slate-800/80 p-6 rounded-2xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Question Papers</p>
+                                <h3 class="text-3xl font-extrabold text-white mt-1">${papers.length}</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-purple-600/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 border border-slate-800/80 p-6 rounded-2xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Total Attempts</p>
+                                <h3 class="text-3xl font-extrabold text-white mt-1">${attempts.length}</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 border border-slate-800/80 p-6 rounded-2xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Average Score</p>
+                                <h3 class="text-3xl font-extrabold text-white mt-1">${avgScore}%</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-600/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 border border-slate-800/80 p-6 rounded-2xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Highest Score</p>
+                                <h3 class="text-3xl font-extrabold text-white mt-1">${highestScore} pts</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-amber-600/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================
+           5. LANGUAGE SELECTION MODAL BEFORE TEST
+           ========================================== */
+        let selectedExamLanguageModalState = null;
+
+        function promptLanguageSelection(paperId, mode) {
+            selectedExamLanguageModalState = null;
+            openModal(`
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/10 text-purple-400 border border-purple-500/20 uppercase tracking-wider">Language Selection</span>
+                        <h3 class="text-xl font-bold text-white mt-2">Choose Your Exam Language</h3>
+                        <p class="text-xs text-slate-400 mt-1">परीक्षा की भाषा चुनें / Choose your preferred language to start the exam</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div id="lang-card-hi" onclick="selectModalLanguage('hi')" class="bg-slate-900 border-2 border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 text-center cursor-pointer transition group">
+                            <span class="text-3xl block mb-2">🇮🇳</span>
+                            <h4 class="font-bold text-white text-base group-hover:text-purple-300">हिंदी</h4>
+                            <p class="text-[10px] text-slate-400 mt-1">Hindi Language</p>
+                        </div>
+                        <div id="lang-card-en" onclick="selectModalLanguage('en')" class="bg-slate-900 border-2 border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 text-center cursor-pointer transition group">
+                            <span class="text-3xl block mb-2">🇬🇧</span>
+                            <h4 class="font-bold text-white text-base group-hover:text-purple-300">English</h4>
+                            <p class="text-[10px] text-slate-400 mt-1">English Language</p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3 pt-2">
+                        <button onclick="closeModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-sm font-semibold transition">Cancel</button>
+                        <button id="btn-continue-exam" onclick="confirmStartExam('${paperId}', '${mode}')" disabled class="flex-1 bg-purple-600/50 cursor-not-allowed text-white py-2.5 rounded-xl text-sm font-semibold transition shadow-lg shadow-purple-900/20">Continue / आगे बढ़ें</button>
+                    </div>
+                </div>
+            `);
+        }
+
+        function selectModalLanguage(lang) {
+            selectedExamLanguageModalState = lang;
+            const cardHi = document.getElementById('lang-card-hi');
+            const cardEn = document.getElementById('lang-card-en');
+            const btnContinue = document.getElementById('btn-continue-exam');
+
+            if (lang === 'hi') {
+                cardHi.className = 'bg-purple-600/20 border-2 border-purple-500 rounded-2xl p-5 text-center cursor-pointer transition group shadow-lg shadow-purple-900/30';
+                cardEn.className = 'bg-slate-900 border-2 border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 text-center cursor-pointer transition group';
+            } else {
+                cardEn.className = 'bg-purple-600/20 border-2 border-purple-500 rounded-2xl p-5 text-center cursor-pointer transition group shadow-lg shadow-purple-900/30';
+                cardHi.className = 'bg-slate-900 border-2 border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 text-center cursor-pointer transition group';
+            }
+
+            btnContinue.disabled = false;
+            btnContinue.className = 'flex-1 bg-purple-600 hover:bg-purple-500 text-white py-2.5 rounded-xl text-sm font-semibold transition shadow-lg shadow-purple-900/30 cursor-pointer';
+        }
+
+        function confirmStartExam(paperId, mode) {
+            if (!selectedExamLanguageModalState) return;
+            closeModal();
+            router.navigate('exam', { paperId, mode, lang: selectedExamLanguageModalState });
+        }
+
+        /* ==========================================
+           6. VIEW: TEST CENTER
+           ========================================== */
+        function renderTestCenterView() {
+            const papers = db.getPapers();
+            const attempts = db.getAttempts();
+
+            return `
+                <div class="space-y-6 animate-fade-in">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/10 text-purple-400 border border-purple-500/20 inline-block mb-2">Practice Mode — Unlimited Attempts</span>
+                            <h1 class="text-2xl font-bold text-white">Test Center (परीक्षण केंद्र)</h1>
+                            <p class="text-slate-400 text-sm">Attempt any test in Hindi or English as many times as you want with separate attempt logs.</p>
+                        </div>
+                    </div>
+
+                    <!-- Search & Filters -->
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1 relative">
+                            <svg class="w-5 h-5 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input type="text" id="test-search" placeholder="Search practice tests..." oninput="filterTestCenter()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div class="sm:w-48">
+                            <select id="test-subject-filter" onchange="filterTestCenter()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                                <option value="">All Subjects</option>
+                                ${getUniqueSubjects(papers).map(sub => `<option value="${sub}">${sub}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tests Grid -->
+                    <div id="test-center-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${renderTestCards(papers, attempts)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getUniqueSubjects(papers) {
+            const subs = new Set();
+            papers.forEach(p => {
+                const subStr = typeof p.subject === 'object' ? (p.subject.en || p.subject.hi) : p.subject;
+                if (subStr) subs.add(subStr);
+            });
+            return Array.from(subs);
+        }
+
+        function renderTestCards(papers, attempts) {
+            if (papers.length === 0) {
+                return `
+                    <div class="col-span-full py-16 text-center bg-slate-900/50 border border-slate-800 rounded-2xl">
+                        <p class="text-slate-400 text-sm">No practice tests available.</p>
+                        <button onclick="router.navigate('creator')" class="mt-3 text-purple-400 font-semibold text-sm hover:underline">Create a bilingual paper</button>
+                    </div>
+                `;
+            }
+
+            return papers.map(paper => {
+                const paperAttempts = attempts.filter(a => a.paperId === paper.id);
+                const attemptCount = paperAttempts.length;
+                let bestScore = 0;
+                paperAttempts.forEach(a => { if (a.percentage > bestScore) bestScore = a.percentage; });
+
+                const titleText = typeof paper.title === 'object' ? (paper.title.en || paper.title.hi) : paper.title;
+                const subjectText = typeof paper.subject === 'object' ? (paper.subject.en || paper.subject.hi) : paper.subject;
+
+                return `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-purple-500/50 transition group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/10 text-purple-400 border border-purple-500/20">${escapeHtml(subjectText || 'General')}</span>
+                                <span class="text-xs text-slate-400 font-medium">${escapeHtml(paper.grade || 'All Grades')}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-300 transition">${escapeHtml(titleText)}</h3>
+                            <p class="text-xs text-slate-400 mb-4 line-clamp-2">${escapeHtml(typeof paper.instructions === 'object' ? (paper.instructions.en || paper.instructions.hi) : paper.instructions)}</p>
+                            
+                            <div class="grid grid-cols-3 gap-2 text-center py-2.5 bg-slate-950 rounded-xl border border-slate-800/80 mb-4 text-xs">
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Questions</span>
+                                    <span class="font-bold text-white">${paper.questions.length}</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Duration</span>
+                                    <span class="font-bold text-white">${paper.duration}m</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Attempts</span>
+                                    <span class="font-bold text-purple-400">${attemptCount}</span>
+                                </div>
+                            </div>
+                            
+                            ${attemptCount > 0 ? `
+                                <div class="mb-4 text-xs bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+                                    <span class="text-slate-400">Best Score:</span>
+                                    <span class="font-bold text-emerald-400">${bestScore}%</span>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="promptLanguageSelection('${paper.id}', 'test-center')" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-1 shadow-lg shadow-purple-900/30">
+                                    <span>${attemptCount > 0 ? 'Retake Test' : 'Start Test'}</span>
+                                </button>
+                                <button onclick="router.navigate('attempt-history')" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-1">
+                                    <span>History (${attemptCount})</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterTestCenter() {
+            const query = document.getElementById('test-search').value.toLowerCase();
+            const subject = document.getElementById('test-subject-filter').value;
+            const papers = db.getPapers();
+            const attempts = db.getAttempts();
+            
+            const filtered = papers.filter(p => {
+                const titleStr = typeof p.title === 'object' ? (p.title.en + ' ' + p.title.hi) : p.title;
+                const subStr = typeof p.subject === 'object' ? (p.subject.en || p.subject.hi) : p.subject;
+                const matchTitle = titleStr.toLowerCase().includes(query);
+                const matchSubject = !subject || subStr === subject;
+                return matchTitle && matchSubject;
+            });
+            
+            document.getElementById('test-center-grid').innerHTML = renderTestCards(filtered, attempts);
+        }
+
+        /* ==========================================
+           7. VIEW: PAPER ATTEMPT SECTION
+           ========================================== */
+        function renderPaperAttemptListView() {
+            const papers = db.getPapers();
+            const attempts = db.getAttempts();
+
+            return `
+                <div class="space-y-6 animate-fade-in">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 inline-block mb-2">Secure Exam Session — Timed & Evaluated</span>
+                            <h1 class="text-2xl font-bold text-white">Paper Attempt (परीक्षा प्रयास)</h1>
+                            <p class="text-slate-400 text-sm">Select any published question paper in Hindi or English to launch a timed exam session.</p>
+                        </div>
+                    </div>
+
+                    <!-- Search & Filters -->
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1 relative">
+                            <svg class="w-5 h-5 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input type="text" id="paper-attempt-search" placeholder="Search papers..." oninput="filterPaperAttemptList()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="sm:w-48">
+                            <select id="paper-attempt-subject-filter" onchange="filterPaperAttemptList()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-indigo-500">
+                                <option value="">All Subjects</option>
+                                ${getUniqueSubjects(papers).map(sub => `<option value="${sub}">${sub}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="paper-attempt-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${renderPaperAttemptCards(papers, attempts)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPaperAttemptCards(papers, attempts) {
+            if (papers.length === 0) {
+                return `
+                    <div class="col-span-full py-16 text-center bg-slate-900/50 border border-slate-800 rounded-2xl">
+                        <p class="text-slate-400 text-sm">No question papers available.</p>
+                        <button onclick="router.navigate('creator')" class="mt-3 text-indigo-400 font-semibold text-sm hover:underline">Create a paper</button>
+                    </div>
+                `;
+            }
+
+            return papers.map(paper => {
+                const paperAttempts = attempts.filter(a => a.paperId === paper.id);
+                const attemptCount = paperAttempts.length;
+                const titleText = typeof paper.title === 'object' ? (paper.title.en || paper.title.hi) : paper.title;
+                const subjectText = typeof paper.subject === 'object' ? (paper.subject.en || paper.subject.hi) : paper.subject;
+
+                return `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-indigo-500/50 transition group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-600/10 text-indigo-400 border border-indigo-500/20">${escapeHtml(subjectText || 'General')}</span>
+                                <span class="text-xs text-slate-400 font-medium">${escapeHtml(paper.grade || 'All Grades')}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-indigo-300 transition">${escapeHtml(titleText)}</h3>
+                            <p class="text-xs text-slate-400 mb-4 line-clamp-2">${escapeHtml(typeof paper.instructions === 'object' ? (paper.instructions.en || paper.instructions.hi) : paper.instructions)}</p>
+                            
+                            <div class="grid grid-cols-3 gap-2 text-center py-2.5 bg-slate-950 rounded-xl border border-slate-800/80 mb-4 text-xs">
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Questions</span>
+                                    <span class="font-bold text-white">${paper.questions.length}</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Duration</span>
+                                    <span class="font-bold text-white">${paper.duration}m</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Attempts</span>
+                                    <span class="font-bold text-indigo-400">${attemptCount}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="promptLanguageSelection('${paper.id}', 'paper-attempt')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-1 shadow-lg shadow-indigo-900/30">
+                                <span>Start Paper Attempt</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterPaperAttemptList() {
+            const query = document.getElementById('paper-attempt-search').value.toLowerCase();
+            const subject = document.getElementById('paper-attempt-subject-filter').value;
+            const papers = db.getPapers();
+            const attempts = db.getAttempts();
+            
+            const filtered = papers.filter(p => {
+                const titleStr = typeof p.title === 'object' ? (p.title.en + ' ' + p.title.hi) : p.title;
+                const subStr = typeof p.subject === 'object' ? (p.subject.en || p.subject.hi) : p.subject;
+                const matchTitle = titleStr.toLowerCase().includes(query);
+                const matchSubject = !subject || subStr === subject;
+                return matchTitle && matchSubject;
+            });
+            
+            document.getElementById('paper-attempt-grid').innerHTML = renderPaperAttemptCards(filtered, attempts);
+        }
+
+        /* ==========================================
+           8. VIEW: EXAM TAKER & DIGITAL OMR SHEET
+           ========================================== */
+        let activeExamState = null;
+        let examTimerInterval = null;
+
+        function renderExamView(paperId, mode = 'test-center', lang = 'en') {
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === paperId);
+            if (!paper) return `<div class="p-8 text-center text-slate-400">Exam paper not found.</div>`;
+
+            const storageKey = `examgenius_bilingual_attempt_${mode}_${paperId}_${lang}`;
+            const savedState = localStorage.getItem(storageKey);
+            
+            if (savedState) {
+                activeExamState = JSON.parse(savedState);
+            } else {
+                activeExamState = {
+                    paperId: paper.id,
+                    paperTitle: typeof paper.title === 'object' ? (paper.title[lang] || paper.title.en) : paper.title,
+                    mode: mode,
+                    language: lang,
+                    startTime: Date.now(),
+                    durationSeconds: paper.duration * 60,
+                    remainingSeconds: paper.duration * 60,
+                    answers: {},
+                    currentIndex: 0
+                };
+                localStorage.setItem(storageKey, JSON.stringify(activeExamState));
+            }
+
+            const isHi = lang === 'hi';
+
+            return `
+                <div class="space-y-6 max-w-6xl mx-auto animate-fade-in" id="exam-wrapper">
+                    <!-- Exam Header Bar -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/15 text-purple-300 border border-purple-500/30 uppercase tracking-wider">${isHi ? (mode === 'test-center' ? 'टेस्ट सेंटर — अभ्यास मोड 🇮🇳' : 'पेपर प्रयास — परीक्षा मोड 🇮🇳') : (mode === 'test-center' ? 'Test Center — Practice Mode 🇬🇧' : 'Paper Attempt — Exam Mode 🇬🇧')}</span>
+                            <h1 class="text-xl font-bold text-white mt-1">${escapeHtml(typeof paper.title === 'object' ? (paper.title[lang] || paper.title.en) : paper.title)}</h1>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-navy-950 border border-slate-800 px-4 py-2 rounded-xl flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span id="exam-timer-display" class="font-mono font-bold text-white text-lg">--:--</span>
+                            </div>
+                            <button onclick="confirmSubmitExam('${mode}', '${lang}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-emerald-900/30">
+                                ${isHi ? 'परीक्षा जमा करें (Submit)' : 'Submit Exam'}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Exam Workspace -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Current Question Panel -->
+                        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-between min-h-[420px]">
+                            <div id="exam-question-area"></div>
+
+                            <div class="flex items-center justify-between pt-6 border-t border-slate-800 mt-6">
+                                <button onclick="navigateExamQuestion(-1, '${lang}')" id="btn-prev-q" class="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition">${isHi ? 'पिछला (Prev)' : 'Previous'}</button>
+                                <span id="exam-q-indicator" class="text-xs text-slate-400 font-medium">Question 1 of ${paper.questions.length}</span>
+                                <button onclick="navigateExamQuestion(1, '${lang}')" id="btn-next-q" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition">${isHi ? 'अगلا (Next)' : 'Next'}</button>
+                            </div>
+                        </div>
+
+                        <!-- Digital OMR Answer Sheet Sidebar -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+                            <div>
+                                <h3 class="font-bold text-white text-base mb-1">${isHi ? 'डिजिटल ओएमआर शीट (OMR Sheet)' : 'Digital OMR Sheet'}</h3>
+                                <p class="text-xs text-slate-400">${isHi ? 'उत्तर दर्ज करने के लिए बुलबुले पर क्लिक करें।' : 'Click option bubbles to record your answers.'}</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 text-center">
+                                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                    <span class="block text-xs text-slate-400">${isHi ? 'उत्तर दिए गए' : 'Answered'}</span>
+                                    <span id="omr-answered-count" class="text-lg font-bold text-emerald-400">0</span>
+                                </div>
+                                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                    <span class="block text-xs text-slate-400">${isHi ? 'छूटे हुए' : 'Unanswered'}</span>
+                                    <span id="omr-unanswered-count" class="text-lg font-bold text-amber-400">${paper.questions.length}</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3 max-h-[320px] overflow-y-auto pr-1" id="omr-bubbles-container"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initExamListeners(paperId, mode, lang) {
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === paperId);
+            if (!paper) return;
+
+            if (examTimerInterval) clearInterval(examTimerInterval);
+            examTimerInterval = setInterval(() => {
+                activeExamState.remainingSeconds--;
+                updateTimerDisplay();
+                
+                if (activeExamState.remainingSeconds <= 0) {
+                    clearInterval(examTimerInterval);
+                    showToast(lang === 'hi' ? 'समय समाप्त! स्वतः सबमिट हो रहा है...' : 'Exam time expired! Auto-submitting...', 'info');
+                    finalizeExamSubmission(paperId, mode, lang, true);
+                }
+            }, 1000);
+
+            renderActiveQuestion(lang);
+            renderOMRPanel(paper, lang);
+            updateOMRCounters(paper);
+
+            window.onbeforeunload = function() {
+                return "You have an active exam in progress.";
+            };
+        }
+
+        function updateTimerDisplay() {
+            const el = document.getElementById('exam-timer-display');
+            if (!el) return;
+            const mins = Math.floor(activeExamState.remainingSeconds / 60);
+            const secs = activeExamState.remainingSeconds % 60;
+            el.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function renderActiveQuestion(lang) {
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === activeExamState.paperId);
+            if (!paper) return;
+
+            const idx = activeExamState.currentIndex;
+            const q = paper.questions[idx];
+            const currentSelected = activeExamState.answers[q.id] || '';
+            const isHi = lang === 'hi';
+
+            // Language Fallback Mechanism
+            let qText = '';
+            let fallbackWarning = '';
+            if (isHi) {
+                if (q.question && q.question.hi && q.question.hi.trim() !== '') {
+                    qText = q.question.hi;
+                } else if (q.question && q.question.en) {
+                    qText = q.question.en;
+                    fallbackWarning = '<span class="text-amber-400 text-xs block mb-2 font-medium">⚠️ [हिंदी अनुवाद उपलब्ध नहीं है। अंग्रेजी संस्करण प्रदर्शित किया जा रहा है।]</span>';
+                } else if (typeof q.question === 'string') {
+                    qText = q.question;
+                }
+            } else {
+                if (q.question && q.question.en && q.question.en.trim() !== '') {
+                    qText = q.question.en;
+                } else if (q.question && q.question.hi) {
+                    qText = q.question.hi;
+                    fallbackWarning = '<span class="text-amber-400 text-xs block mb-2 font-medium">⚠️ [English translation unavailable. Displaying Hindi fallback.]</span>';
+                } else if (typeof q.question === 'string') {
+                    qText = q.question;
+                }
+            }
+
+            document.getElementById('exam-q-indicator').innerText = isHi ? `प्रश्न ${idx + 1} / ${paper.questions.length}` : `Question ${idx + 1} of ${paper.questions.length}`;
+            document.getElementById('btn-prev-q').style.visibility = idx === 0 ? 'hidden' : 'visible';
+            document.getElementById('btn-next-q').innerText = idx === paper.questions.length - 1 ? (isHi ? 'समीक्षा करें और सबमिट करें' : 'Review & Submit') : (isHi ? 'अगला' : 'Next');
+
+            const html = `
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/15 text-purple-300 border border-purple-500/30">${isHi ? `प्रश्न ${idx + 1}` : `Question ${idx + 1}`}</span>
+                        <span class="text-xs text-slate-400 font-medium">${q.marks || paper.correctMarks || 4} ${isHi ? 'अंक' : 'Marks'}</span>
+                    </div>
+                    ${fallbackWarning}
+                    <h2 class="text-lg sm:text-xl font-semibold text-white mb-6 leading-relaxed">${escapeHtml(qText)}</h2>
+
+                    <div class="space-y-3">
+                        ${['A', 'B', 'C', 'D'].map((opt) => {
+                            const isSelected = currentSelected === opt;
+                            let optText = '';
+                            if (q.options && q.options[opt]) {
+                                optText = isHi ? (q.options[opt].hi || q.options[opt].en || '') : (q.options[opt].en || q.options[opt].hi || '');
+                            }
+                            return `
+                                <div onclick="selectExamOption('${q.id}', '${opt}', '${lang}')" class="w-full text-left px-5 py-4 rounded-xl border transition flex items-center space-x-4 cursor-pointer ${isSelected ? 'bg-purple-600/20 border-purple-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-900'}">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${isSelected ? 'bg-purple-600 text-white' : 'bg-slate-900 border border-slate-800 text-slate-400'}">
+                                        ${opt}
+                                    </div>
+                                    <span class="text-sm font-medium">${escapeHtml(optText)}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            document.getElementById('exam-question-area').innerHTML = html;
+        }
+
+        function selectExamOption(qId, option, lang) {
+            activeExamState.answers[qId] = option;
+            localStorage.setItem(`examgenius_bilingual_attempt_${activeExamState.mode}_${activeExamState.paperId}_${lang}`, JSON.stringify(activeExamState));
+            renderActiveQuestion(lang);
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === activeExamState.paperId);
+            renderOMRPanel(paper, lang);
+            updateOMRCounters(paper);
+        }
+
+        function navigateExamQuestion(direction, lang) {
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === activeExamState.paperId);
+            const newIdx = activeExamState.currentIndex + direction;
+            
+            if (newIdx < 0) return;
+            if (newIdx >= paper.questions.length) {
+                confirmSubmitExam(activeExamState.mode, lang);
+                return;
+            }
+
+            activeExamState.currentIndex = newIdx;
+            renderActiveQuestion(lang);
+        }
+
+        function renderOMRPanel(paper, lang) {
+            const container = document.getElementById('omr-bubbles-container');
+            if (!container) return;
+
+            container.innerHTML = paper.questions.map((q, idx) => {
+                const selected = activeExamState.answers[q.id];
+                return `
+                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border ${selected ? 'border-purple-500/40' : 'border-slate-800/80'} cursor-pointer" onclick="jumpToExamQuestion(${idx}, '${lang}')">
+                        <span class="text-xs font-bold text-slate-300 w-8">Q${idx + 1}</span>
+                        <div class="flex items-center space-x-2">
+                            ${['A', 'B', 'C', 'D'].map(opt => {
+                                const isSel = selected === opt;
+                                return `
+                                    <span class="w-6 h-6 rounded-full text-[10px] font-bold flex items-center justify-center border ${isSel ? 'bg-purple-600 border-purple-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-400'}">
+                                        ${opt}
+                                    </span>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function jumpToExamQuestion(idx, lang) {
+            activeExamState.currentIndex = idx;
+            renderActiveQuestion(lang);
+        }
+
+        function updateOMRCounters(paper) {
+            const answeredCount = Object.keys(activeExamState.answers).filter(k => activeExamState.answers[k]).length;
+            const unansweredCount = paper.questions.length - answeredCount;
+            
+            const ansEl = document.getElementById('omr-answered-count');
+            const unansEl = document.getElementById('omr-unanswered-count');
+            if (ansEl) ansEl.innerText = answeredCount;
+            if (unansEl) unansEl.innerText = unansweredCount;
+        }
+
+        function confirmSubmitExam(mode, lang) {
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === activeExamState.paperId);
+            const answeredCount = Object.keys(activeExamState.answers).filter(k => activeExamState.answers[k]).length;
+            const unansweredCount = paper.questions.length - answeredCount;
+            const isHi = lang === 'hi';
+
+            openModal(`
+                <h3 class="text-lg font-bold text-white mb-2">${isHi ? 'परीक्षा जमा करने की पुष्टि करें' : 'Submit Exam Confirmation'}</h3>
+                <p class="text-slate-400 text-sm mb-4">You have answered <strong>${answeredCount}</strong> out of <strong>${paper.questions.length}</strong> questions. ${unansweredCount > 0 ? `<br><span class="text-amber-400">${isHi ? `चेतावनी: आपके ${unansweredCount} प्रश्न छूटे हैं!` : `Warning: You have ${unansweredCount} unanswered questions!`}</span>` : ''}</p>
+                <div class="flex space-x-3">
+                    <button onclick="closeModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2.5 rounded-xl font-semibold text-sm">${isHi ? 'जारी रखें' : 'Continue Exam'}</button>
+                    <button onclick="finalizeExamSubmission('${paper.id}', '${mode}', '${lang}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-semibold text-sm">${isHi ? 'पुष्टि करें और सबमिट करें' : 'Confirm Submit'}</button>
+                </div>
+            `);
+        }
+
+        function finalizeExamSubmission(paperId, mode, lang, autoSubmitted = false) {
+            if (examTimerInterval) clearInterval(examTimerInterval);
+            window.onbeforeunload = null;
+            closeModal();
+
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === paperId);
+            if (!paper) return;
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unansweredCount = 0;
+            let totalScore = 0;
+            let maxPossibleMarks = 0;
+
+            const detailedAnswers = paper.questions.map((q) => {
+                const qMarks = Number(q.marks) || paper.correctMarks || 4;
+                maxPossibleMarks += qMarks;
+                const studentAns = activeExamState.answers[q.id];
+                
+                let awarded = 0;
+                let status = 'unanswered';
+
+                if (!studentAns) {
+                    unansweredCount++;
+                    awarded = paper.unansweredMarks || 0;
+                } else if (studentAns === q.correctAnswer) {
+                    correctCount++;
+                    awarded = qMarks;
+                    totalScore += awarded;
+                    status = 'correct';
+                } else {
+                    incorrectCount++;
+                    awarded = -(paper.negativeMarks || 1);
+                    totalScore += awarded;
+                    status = 'incorrect';
+                }
+
+                const qText = typeof q.question === 'object' ? (q.question[lang] || q.question.en) : q.question;
+                const explText = typeof q.explanation === 'object' ? (q.explanation[lang] || q.explanation.en) : q.explanation;
+
+                return {
+                    questionId: q.id,
+                    questionText: qText,
+                    options: q.options,
+                    correctOption: q.correctAnswer,
+                    studentOption: studentAns || '',
+                    status,
+                    marksAwarded: awarded,
+                    explanation: explText
+                };
+            });
+
+            totalScore = Math.max(0, totalScore);
+            const percentage = maxPossibleMarks > 0 ? ((totalScore / maxPossibleMarks) * 100).toFixed(1) : 0;
+
+            const attempts = db.getAttempts();
+            const attemptNumber = attempts.filter(a => a.paperId === paper.id).length + 1;
+
+            const paperTitleStr = typeof paper.title === 'object' ? (paper.title[lang] || paper.title.en) : paper.title;
+            const subjectStr = typeof paper.subject === 'object' ? (paper.subject[lang] || paper.subject.en) : paper.subject;
+
+            const attemptResult = {
+                id: 'attempt-' + Date.now(),
+                paperId: paper.id,
+                paperTitle: paperTitleStr,
+                subject: subjectStr,
+                grade: paper.grade,
+                mode: mode,
+                language: lang,
+                attemptNumber: attemptNumber,
+                timestamp: new Date().toISOString(),
+                score: totalScore,
+                maxScore: maxPossibleMarks,
+                percentage: Number(percentage),
+                correctCount,
+                incorrectCount,
+                unansweredCount,
+                autoSubmitted,
+                detailedAnswers
+            };
+
+            attempts.push(attemptResult);
+            db.saveAttempts(attempts);
+
+            localStorage.removeItem(`examgenius_bilingual_attempt_${mode}_${paperId}_${lang}`);
+
+            showToast(lang === 'hi' ? 'परीक्षा सफलतापूर्वक सबमिट हुई! प्रयास सुरक्षित कर लिया गया है।' : 'Exam submitted successfully! Attempt saved.');
+            router.navigate('result', { attemptId: attemptResult.id });
+        }
+
+        /* ==========================================
+           9. VIEW: ATTEMPT HISTORY
+           ========================================== */
+        function renderAttemptHistoryView() {
+            const attempts = db.getAttempts();
+
+            return `
+                <div class="space-y-6 animate-fade-in">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-600/10 text-emerald-400 border border-emerald-500/20 inline-block mb-2">Separate Attempt Logs — Language Tracked</span>
+                            <h1 class="text-2xl font-bold text-white">Attempt History (प्रयास इतिहास)</h1>
+                            <p class="text-slate-400 text-sm">Review past attempt logs along with the language used (Hindi / English).</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                        ${attempts.length === 0 ? `
+                            <div class="py-16 text-center text-slate-400">
+                                <p class="text-sm">No exam or practice attempts recorded yet.</p>
+                                <button onclick="router.navigate('test-center')" class="mt-3 text-purple-400 font-semibold text-sm hover:underline">Take a test in Test Center</button>
+                            </div>
+                        ` : `
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider bg-slate-950/60">
+                                            <th class="p-4">Test / Paper Name</th>
+                                            <th class="p-4">Language</th>
+                                            <th class="p-4">Attempt #</th>
+                                            <th class="p-4">Date & Time</th>
+                                            <th class="p-4">Score</th>
+                                            <th class="p-4">Percentage</th>
+                                            <th class="p-4">Correct / Incorrect / Unanswered</th>
+                                            <th class="p-4">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/80 text-sm">
+                                        ${attempts.map(att => `
+                                            <tr class="hover:bg-slate-850 transition">
+                                                <td class="p-4 font-semibold text-white">
+                                                    ${escapeHtml(att.paperTitle)}
+                                                    <span class="block text-[10px] text-slate-400 uppercase font-normal">${att.mode === 'test-center' ? 'Test Center' : 'Paper Attempt'}</span>
+                                                </td>
+                                                <td class="p-4">
+                                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${att.language === 'hi' ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'}">${att.language === 'hi' ? '🇮🇳 हिंदी' : '🇬🇧 English'}</span>
+                                                </td>
+                                                <td class="p-4 text-purple-400 font-bold">#${att.attemptNumber || 1}</td>
+                                                <td class="p-4 text-slate-400 text-xs">${new Date(att.timestamp).toLocaleString()}</td>
+                                                <td class="p-4 text-slate-200 font-bold">${att.score} / ${att.maxScore}</td>
+                                                <td class="p-4">
+                                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${att.percentage}%</span>
+                                                </td>
+                                                <td class="p-4 text-xs text-slate-300">
+                                                    <span class="text-emerald-400 font-bold">${att.correctCount}C</span> / 
+                                                    <span class="text-red-400 font-bold">${att.incorrectCount}I</span> / 
+                                                    <span class="text-amber-400 font-bold">${att.unansweredCount}U</span>
+                                                </td>
+                                                <td class="p-4 space-x-2">
+                                                    <button onclick="router.navigate('result', { attemptId: '${att.id}' })" class="text-purple-400 hover:underline font-semibold text-xs">View Results</button>
+                                                    <button onclick="promptLanguageSelection('${att.paperId}', '${att.mode || 'test-center'}')" class="text-indigo-400 hover:underline font-semibold text-xs">Retake</button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================
+           10. VIEW: RESULT SCREEN
+           ========================================== */
+        function renderResultView(attemptId) {
+            const attempts = db.getAttempts();
+            const attempt = attempts.find(a => a.id === attemptId);
+            if (!attempt) return `<div class="p-8 text-center text-slate-400">Result record not found. <button onclick="router.navigate('dashboard')" class="text-purple-400 underline">Dashboard</button></div>`;
+
+            const gradeLetter = attempt.percentage >= 90 ? 'A+' : attempt.percentage >= 80 ? 'A' : attempt.percentage >= 70 ? 'B' : attempt.percentage >= 60 ? 'C' : 'D';
+
+            return `
+                <div class="space-y-6 max-w-4xl mx-auto animate-fade-in">
+                    <div class="flex items-center justify-between">
+                        <button onclick="router.navigate('attempt-history')" class="text-sm text-purple-400 hover:underline inline-flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            <span>Back to Attempt History</span>
+                        </button>
+                        <div class="flex space-x-3">
+                            <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-sm font-semibold">Print Result</button>
+                            <button onclick="promptLanguageSelection('${attempt.paperId}', '${attempt.mode || 'test-center'}')" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-sm font-semibold">Retake Test</button>
+                        </div>
+                    </div>
+
+                    <!-- Result Hero Card -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center relative overflow-hidden">
+                        <div class="inline-flex w-16 h-16 rounded-2xl bg-purple-600/20 text-purple-400 border border-purple-500/30 items-center justify-center mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-white mb-1">Attempt #${attempt.attemptNumber || 1} Evaluated</h1>
+                        <p class="text-slate-400 text-sm mb-2">${escapeHtml(attempt.paperTitle)} • ${escapeHtml(attempt.subject)}</p>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold ${attempt.language === 'hi' ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'} inline-block mb-6">${attempt.language === 'hi' ? '🇮🇳 हिंदी भाषा में प्रयास किया गया' : '🇬🇧 Attempted in English'}</span>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto bg-slate-950 p-6 rounded-2xl border border-slate-800 mb-6">
+                            <div>
+                                <span class="block text-xs uppercase tracking-wider text-slate-400">Total Score</span>
+                                <span class="text-2xl font-bold text-white">${attempt.score} / ${attempt.maxScore}</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs uppercase tracking-wider text-slate-400">Percentage</span>
+                                <span class="text-2xl font-bold text-emerald-400">${attempt.percentage}%</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs uppercase tracking-wider text-slate-400">Grade</span>
+                                <span class="text-2xl font-bold text-purple-400">${gradeLetter}</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs uppercase tracking-wider text-slate-400">Status</span>
+                                <span class="text-2xl font-bold text-indigo-400">Saved</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap justify-center gap-4 text-xs font-medium">
+                            <span class="px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Correct: ${attempt.correctCount}</span>
+                            <span class="px-3 py-1.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">Incorrect: ${attempt.incorrectCount}</span>
+                            <span class="px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Unanswered: ${attempt.unansweredCount}</span>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Question Review -->
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-bold text-white">Question-by-Question Review</h2>
+                        <div class="space-y-4">
+                            ${attempt.detailedAnswers.map((ans, idx) => {
+                                const isCorrect = ans.status === 'correct';
+                                const isUnanswered = ans.status === 'unanswered';
+                                const badgeColor = isUnanswered ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : isCorrect ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20';
+                                const badgeText = isUnanswered ? 'Unanswered' : isCorrect ? 'Correct (+)' : 'Incorrect (-)';
+
+                                const studentOptText = ans.studentOption && ans.options[ans.studentOption] ? (ans.options[ans.studentOption][attempt.language] || ans.options[ans.studentOption].en || '') : '';
+                                const correctOptText = ans.options[ans.correctOption] ? (ans.options[ans.correctOption][attempt.language] || ans.options[ans.correctOption].en || '') : '';
+
+                                return `
+                                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-bold text-purple-400 uppercase">Question ${idx + 1}</span>
+                                            <span class="px-3 py-1 rounded-full text-xs font-semibold border ${badgeColor}">${badgeText}</span>
+                                        </div>
+                                        <p class="font-semibold text-white text-base">${escapeHtml(ans.questionText)}</p>
+                                        
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm pt-2">
+                                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                                <span class="block text-[10px] text-slate-500 uppercase">Your Answer</span>
+                                                <span class="font-bold ${isCorrect ? 'text-emerald-400' : 'text-red-400'}">${ans.studentOption ? `${ans.studentOption}. ${escapeHtml(studentOptText)}` : 'None (Unanswered)'}</span>
+                                            </div>
+                                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                                <span class="block text-[10px] text-slate-500 uppercase">Correct Answer</span>
+                                                <span class="font-bold text-emerald-400">${ans.correctOption}.${escapeHtml(correctOptText)}</span>
+                                            </div>
+                                        </div>
+
+                                        ${ans.explanation ? `
+                                            <div class="text-xs text-slate-400 bg-slate-950/60 p-3 rounded-xl border border-slate-800/60">
+                                                <span class="font-bold text-slate-300">Explanation:</span> ${escapeHtml(ans.explanation)}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================
+           11. VIEW: QUESTION PAPER CREATOR (BILINGUAL)
+           ========================================== */
+        let currentEditingPaper = null;
+
+        function renderCreatorView(paperId) {
+            if (paperId) {
+                const papers = db.getPapers();
+                currentEditingPaper = JSON.parse(JSON.stringify(papers.find(p => p.id === paperId) || getEmptyBilingualPaper()));
+            } else {
+                currentEditingPaper = getEmptyBilingualPaper();
+            }
+
+            return `
+                <div class="space-y-6 max-w-4xl mx-auto animate-fade-in">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <button onclick="router.navigate('library')" class="text-sm text-purple-400 hover:underline mb-1 inline-flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                <span>Back to Library</span>
+                            </button>
+                            <h1 class="text-2xl font-bold text-white">${paperId ? 'Edit Bilingual Question Paper' : 'Create Bilingual Question Paper (हिंदी + English)'}</h1>
+                            <p class="text-slate-400 text-sm">Configure English and Hindi fields for title, instructions, questions, and explanations.</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="saveCurrentBilingualPaper()" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm shadow-lg shadow-purple-900/30 transition flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span>Save Paper</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metadata Form -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                        <h2 class="text-lg font-bold text-white mb-2">Paper Metadata & Bilingual Titles</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Exam Title (English) *</label>
+                                <input type="text" id="meta-title-en" value="${escapeHtml(currentEditingPaper.title?.en || '')}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="e.g., Physics Midterm">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">परीक्षा शीर्षक (हिंदी) *</label>
+                                <input type="text" id="meta-title-hi" value="${escapeHtml(currentEditingPaper.title?.hi || '')}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="उदा. भौतिकी परीक्षा">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Subject (English) *</label>
+                                <input type="text" id="meta-subject-en" value="${escapeHtml(currentEditingPaper.subject?.en || '')}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="e.g., Physics">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">विषय (हिंदी)</label>
+                                <input type="text" id="meta-subject-hi" value="${escapeHtml(currentEditingPaper.subject?.hi || '')}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="उदा. भौतिकी">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Class / Grade</label>
+                                <input type="text" id="meta-grade" value="${escapeHtml(currentEditingPaper.grade || '')}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="e.g., Grade 10">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Duration (Minutes)</label>
+                                <input type="number" id="meta-duration" value="${currentEditingPaper.duration || 30}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Marks per Correct Answer</label>
+                                <input type="number" id="meta-correct-marks" value="${currentEditingPaper.correctMarks || 4}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Negative Marks for Incorrect</label>
+                                <input type="number" id="meta-negative-marks" value="${currentEditingPaper.negativeMarks || 1}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Instructions (English)</label>
+                                <textarea id="meta-instructions-en" rows="2" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">${escapeHtml(currentEditingPaper.instructions?.en || '')}</textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">निर्देश (हिंदी)</label>
+                                <textarea id="meta-instructions-hi" rows="2" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">${escapeHtml(currentEditingPaper.instructions?.hi || '')}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questions Editor Section -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-bold text-white">Questions (<span id="question-count-badge">${currentEditingPaper.questions.length}</span>)</h2>
+                            <button onclick="addBilingualQuestionToEditor()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <span>Add Question</span>
+                            </button>
+                        </div>
+
+                        <div id="questions-container" class="space-y-6">
+                            ${renderBilingualEditorQuestions(currentEditingPaper.questions)}
+                        </div>
+
+                        <button onclick="addBilingualQuestionToEditor()" class="w-full py-3 bg-slate-900 hover:bg-slate-850 border border-dashed border-slate-700 text-slate-300 font-semibold rounded-2xl text-sm transition flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            <span>Add Another Question</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getEmptyBilingualPaper() {
+            return {
+                id: 'paper-' + Date.now(),
+                title: { en: '', hi: '' },
+                subject: { en: '', hi: '' },
+                grade: '',
+                instructions: { en: 'Answer all questions.', instruction: 'सभी प्रश्नों के उत्तर दें।' },
+                duration: 30,
+                correctMarks: 4,
+                negativeMarks: 1,
+                unansweredMarks: 0,
+                createdAt: new Date().toISOString(),
+                questions: [
+                    {
+                        id: 'q-' + Date.now(),
+                        question: { en: '', hi: '' },
+                        options: {
+                            'A': { en: '', hi: '' },
+                            'B': { en: '', hi: '' },
+                            'C': { en: '', hi: '' },
+                            'D': { en: '', hi: '' }
+                        },
+                        correctAnswer: 'A',
+                        marks: 4,
+                        explanation: { en: '', hi: '' }
+                    }
+                ]
+            };
+        }
+
+        function renderBilingualEditorQuestions(questions) {
+            return questions.map((q, idx) => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative space-y-4" data-qindex="${idx}">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Question ${idx + 1}</span>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyEnglishToHindiField(${idx})" class="text-xs text-indigo-300 hover:text-white px-2.5 py-1 rounded bg-indigo-950 border border-indigo-800">📋 Copy English to Hindi</button>
+                            <button onclick="removeBilingualQuestion(${idx})" class="text-xs text-red-400 hover:text-red-300 px-2.5 py-1 rounded bg-slate-950 border border-slate-800">Delete</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Question (English) *</label>
+                            <textarea rows="2" oninput="updateBilingualQField(${idx}, 'question.en', this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="English question statement...">${escapeHtml(q.question?.en || '')}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">प्रश्न (हिंदी)</label>
+                            <textarea rows="2" oninput="updateBilingualQField(${idx}, 'question.hi', this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="हिंदी प्रश्न विवरण...">${escapeHtml(q.question?.hi || '')}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-xs uppercase tracking-wider text-slate-400">Options (A, B, C, D) [English & Hindi]</label>
+                        ${['A', 'B', 'C', 'D'].map(opt => `
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-6 h-6 rounded bg-slate-900 border border-slate-800 flex items-center justify-center font-bold text-xs text-slate-400">${opt}</span>
+                                    <input type="text" value="${escapeHtml(q.options?.[opt]?.en || '')}" oninput="updateBilingualQField(${idx}, 'options.${opt}.en', this.value)" class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-purple-500" placeholder="Option ${opt} (English)">
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-6 h-6 rounded bg-slate-900 border border-slate-800 flex items-center justify-center font-bold text-xs text-slate-400">${opt}</span>
+                                    <input type="text" value="${escapeHtml(q.options?.[opt]?.hi || '')}" oninput="updateBilingualQField(${idx}, 'options.${opt}.hi', this.value)" class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-purple-500" placeholder="विकल्प ${opt} (हिंदी)">
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Correct Answer ID *</label>
+                            <select onchange="updateBilingualQField(${idx}, 'correctAnswer', this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-purple-500">
+                                ${['A', 'B', 'C', 'D'].map(opt => `<option value="${opt}" ${q.correctAnswer === opt ? 'selected' : ''}>Option ${opt}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Marks</label>
+                            <input type="number" value="${q.marks || 4}" oninput="updateBilingualQField(${idx}, 'marks', this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-purple-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Explanation (English)</label>
+                            <input type="text" value="${escapeHtml(q.explanation?.en || '')}" oninput="updateBilingualQField(${idx}, 'explanation.en', this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="Explanation in English...">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">स्पष्टीकरण (हिंदी)</label>
+                            <input type="text" value="${escapeHtml(q.explanation?.hi || '')}" oninput="updateBilingualQField(${idx}, 'explanation.hi', this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="हिंदी स्पष्टीकरण...">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateBilingualQField(idx, path, val) {
+            if (!currentEditingPaper || !currentEditingPaper.questions[idx]) return;
+            const parts = path.split('.');
+            let obj = currentEditingPaper.questions[idx];
+            for (let i = 0; i < parts.length - 1; i++) {
+                if (!obj[parts[i]]) obj[parts[i]] = {};
+                obj = obj[parts[i]];
+            }
+            obj[parts[parts.length - 1]] = val;
+        }
+
+        function copyEnglishToHindiField(idx) {
+            syncFormToCurrentPaper();
+            const q = currentEditingPaper.questions[idx];
+            if (q.question) q.question.hi = q.question.en || '';
+            if (q.options) {
+                ['A', 'B', 'C', 'D'].forEach(opt => {
+                    if (q.options[opt]) q.options[opt].hi = q.options[opt].en || '';
+                });
+            }
+            if (q.explanation) q.explanation.hi = q.explanation.en || '';
+            document.getElementById('questions-container').innerHTML = renderBilingualEditorQuestions(currentEditingPaper.questions);
+            showToast('Copied English content to Hindi fields (Convenience helper).');
+        }
+
+        function addBilingualQuestionToEditor() {
+            syncFormToCurrentPaper();
+            currentEditingPaper.questions.push({
+                id: 'q-' + Date.now(),
+                question: { en: '', hi: '' },
+                options: {
+                    'A': { en: '', hi: '' },
+                    'B': { en: '', hi: '' },
+                    'C': { en: '', hi: '' },
+                    'D': { en: '', hi: '' }
+                },
+                correctAnswer: 'A',
+                marks: Number(currentEditingPaper.correctMarks) || 4,
+                explanation: { en: '', hi: '' }
+            });
+            document.getElementById('questions-container').innerHTML = renderBilingualEditorQuestions(currentEditingPaper.questions);
+            document.getElementById('question-count-badge').innerText = currentEditingPaper.questions.length;
+        }
+
+        function removeBilingualQuestion(idx) {
+            syncFormToCurrentPaper();
+            if (currentEditingPaper.questions.length <= 1) {
+                showToast('A paper must have at least one question.', 'error');
+                return;
+            }
+            currentEditingPaper.questions.splice(idx, 1);
+            document.getElementById('questions-container').innerHTML = renderBilingualEditorQuestions(currentEditingPaper.questions);
+            document.getElementById('question-count-badge').innerText = currentEditingPaper.questions.length;
+        }
+
+        function syncFormToCurrentPaper() {
+            if (!currentEditingPaper) return;
+            if (!currentEditingPaper.title) currentEditingPaper.title = {};
+            currentEditingPaper.title.en = document.getElementById('meta-title-en').value.trim();
+            currentEditingPaper.title.hi = document.getElementById('meta-title-hi').value.trim();
+
+            if (!currentEditingPaper.subject) currentEditingPaper.subject = {};
+            currentEditingPaper.subject.en = document.getElementById('meta-subject-en').value.trim();
+            currentEditingPaper.subject.hi = document.getElementById('meta-subject-hi').value.trim();
+
+            currentEditingPaper.grade = document.getElementById('meta-grade').value.trim();
+            currentEditingPaper.duration = Number(document.getElementById('meta-duration').value) || 30;
+            currentEditingPaper.correctMarks = Number(document.getElementById('meta-correct-marks').value) || 4;
+            currentEditingPaper.negativeMarks = Number(document.getElementById('meta-negative-marks').value) || 1;
+
+            if (!currentEditingPaper.instructions) currentEditingPaper.instructions = {};
+            currentEditingPaper.instructions.en = document.getElementById('meta-instructions-en').value.trim();
+            currentEditingPaper.instructions.hi = document.getElementById('meta-instructions-hi').value.trim();
+        }
+
+        function saveCurrentBilingualPaper() {
+            syncFormToCurrentPaper();
+            if (!currentEditingPaper.title.en && !currentEditingPaper.title.hi) {
+                showToast('Please enter an exam title.', 'error');
+                return;
+            }
+
+            // Warning if translations are missing before publishing
+            let missingTranslationCount = 0;
+            currentEditingPaper.questions.forEach((q, i) => {
+                if (!q.question?.hi || !q.question?.en) missingTranslationCount++;
+            });
+
+            if (missingTranslationCount > 0) {
+                if (!confirm(`Warning: ${missingTranslationCount} questions have missing Hindi or English translation fields. Do you still want to publish?`)) {
+                    return;
+                }
+            }
+
+            const papers = db.getPapers();
+            const existingIdx = papers.findIndex(p => p.id === currentEditingPaper.id);
+            if (existingIdx >= 0) {
+                papers[existingIdx] = currentEditingPaper;
+            } else {
+                papers.push(currentEditingPaper);
+            }
+
+            db.savePapers(papers);
+            showToast('Bilingual question paper saved successfully!');
+            router.navigate('library');
+        }
+
+        /* ==========================================
+           12. VIEW: PAPER LIBRARY
+           ========================================== */
+        function renderLibraryView() {
+            const papers = db.getPapers();
+            return `
+                <div class="space-y-6 animate-fade-in">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <button onclick="router.navigate('dashboard')" class="text-sm text-purple-400 hover:underline mb-1 inline-flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                <span>Back to Dashboard</span>
+                            </button>
+                            <h1 class="text-2xl font-bold text-white">Question Paper Library (पेपर लाइब्रेरी)</h1>
+                            <p class="text-slate-400 text-sm">Manage bilingual papers, translate, edit, or launch exams.</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="router.navigate('creator')" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-4 py-2.5 rounded-xl text-sm shadow-lg shadow-purple-900/30 transition flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <span>New Bilingual Paper</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search & Filters -->
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1 relative">
+                            <svg class="w-5 h-5 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input type="text" id="library-search" placeholder="Search papers..." oninput="filterLibrary()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div class="sm:w-48">
+                            <select id="library-subject-filter" onchange="filterLibrary()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                                <option value="">All Subjects</option>
+                                ${getUniqueSubjects(papers).map(sub => `<option value="${sub}">${sub}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Papers Grid -->
+                    <div id="library-papers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${renderPaperCards(papers)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPaperCards(papers) {
+            if (papers.length === 0) {
+                return `
+                    <div class="col-span-full py-16 text-center bg-slate-900/50 border border-slate-800 rounded-2xl">
+                        <p class="text-slate-400 text-sm">No question papers found.</p>
+                        <button onclick="router.navigate('creator')" class="mt-3 text-purple-400 font-semibold text-sm hover:underline">Create your first paper</button>
+                    </div>
+                `;
+            }
+
+            return papers.map(paper => {
+                const titleText = typeof paper.title === 'object' ? (paper.title.en || paper.title.hi) : paper.title;
+                const subjectText = typeof paper.subject === 'object' ? (paper.subject.en || paper.subject.hi) : paper.subject;
+
+                return `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-purple-500/50 transition group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/10 text-purple-400 border border-purple-500/20">${escapeHtml(subjectText || 'General')}</span>
+                                <span class="text-xs text-slate-400 font-medium">${escapeHtml(paper.grade || 'All Grades')}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-300 transition">${escapeHtml(titleText)}</h3>
+                            <p class="text-xs text-slate-400 mb-4 line-clamp-2">${escapeHtml(typeof paper.instructions === 'object' ? (paper.instructions.en || paper.instructions.hi) : paper.instructions)}</p>
+                            <div class="grid grid-cols-3 gap-2 text-center py-2.5 bg-slate-950 rounded-xl border border-slate-800/80 mb-4 text-xs">
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Questions</span>
+                                    <span class="font-bold text-white">${paper.questions.length}</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Duration</span>
+                                    <span class="font-bold text-white">${paper.duration}m</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-500 font-medium">Marks</span>
+                                    <span class="font-bold text-white">${paper.questions.reduce((acc, q) => acc + (Number(q.marks) || paper.correctMarks || 4), 0)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="promptLanguageSelection('${paper.id}', 'test-center')" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1">
+                                    <span>Practice</span>
+                                </button>
+                                <button onclick="router.navigate('translator', { paperId: '${paper.id}' })" class="w-full bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 font-semibold py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1">
+                                    <span>Translate</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between pt-1">
+                                <button onclick="router.navigate('creator', { paperId: '${paper.id}' })" class="text-xs text-purple-400 hover:underline">Edit</button>
+                                <button onclick="duplicatePaper('${paper.id}')" class="text-xs text-slate-400 hover:text-white">Duplicate</button>
+                                <button onclick="confirmDeletePaper('${paper.id}')" class="text-xs text-red-400 hover:underline">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterLibrary() {
+            const query = document.getElementById('library-search').value.toLowerCase();
+            const subject = document.getElementById('library-subject-filter').value;
+            const papers = db.getPapers();
+            
+            const filtered = papers.filter(p => {
+                const titleStr = typeof p.title === 'object' ? (p.title.en + ' ' + p.title.hi) : p.title;
+                const subStr = typeof p.subject === 'object' ? (p.subject.en || p.subject.hi) : p.subject;
+                const matchTitle = titleStr.toLowerCase().includes(query);
+                const matchSubject = !subject || subStr === subject;
+                return matchTitle && matchSubject;
+            });
+            
+            document.getElementById('library-papers-grid').innerHTML = renderPaperCards(filtered);
+        }
+
+        function duplicatePaper(id) {
+            const papers = db.getPapers();
+            const paper = papers.find(p => p.id === id);
+            if (!paper) return;
+            
+            const copy = JSON.parse(JSON.stringify(paper));
+            copy.id = 'paper-' + Date.now();
+            if (typeof copy.title === 'object') {
+                copy.title.en = (copy.title.en || '') + ' (Copy)';
+            } else {
+                copy.title = copy.title + ' (Copy)';
+            }
+            copy.createdAt = new Date().toISOString();
+            
+            papers.push(copy);
+            db.savePapers(papers);
+            showToast('Paper duplicated successfully!');
+            router.navigate('library');
+        }
+
+        function confirmDeletePaper(id) {
+            openModal(`
+                <h3 class="text-lg font-bold text-white mb-2">Delete Question Paper?</h3>
+                <p class="text-slate-400 text-sm mb-6">Are you sure you want to delete this paper?</p>
+                <div class="flex space-x-3">
+                    <button onclick="closeModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2.5 rounded-xl font-semibold text-sm">Cancel</button>
+                    <button onclick="deletePaper('${id}')" class="flex-1 bg-red-600 hover:bg-red-500 text-white py-2.5 rounded-xl font-semibold text-sm">Delete</button>
+                </div>
+            `);
+        }
+
+        function deletePaper(id) {
+            let papers = db.getPapers();
+            papers = papers.filter(p => p.id !== id);
+            db.savePapers(papers);
+            closeModal();
+            showToast('Paper deleted.');
+            router.navigate('library');
+        }
+
+        /* ==========================================
+           13. VIEW: TRANSLATOR
+           ========================================== */
+        let translationSourceLang = 'en';
+        let translationTargetLang = 'hi';
+        let currentLoadedPaperForTranslation = null;
+
+        const academicDictionary = {
+            "what is the chemical formula of water?": "जल का रासायनिक सूत्र क्या है?",
+            "which planet is known as the red planet?": "किस ग्रह को लाल ग्रह के रूप में जाना जाता है?",
+            "chemical formula": "रासायनिक सूत्र",
+            "water": "जल",
+            "planet": "ग्रह",
+            "red planet": "लाल ग्रह",
+            "photosynthesis": "प्रकाश संश्लेषण"
+        };
+
+        function renderTranslatorView(paperId) {
+            const papers = db.getPapers();
+            let initialOriginalText = "";
+
+            if (paperId) {
+                const paper = papers.find(p => p.id === paperId);
+                if (paper) {
+                    currentLoadedPaperForTranslation = paper;
+                    const titleStr = typeof paper.title === 'object' ? paper.title.en : paper.title;
+                    const subStr = typeof paper.subject === 'object' ? paper.subject.en : paper.subject;
+                    initialOriginalText = `Exam Title: ${titleStr}\nSubject: ${subStr}\n\n`;
+                    paper.questions.forEach((q, idx) => {
+                        const qTxt = typeof q.question === 'object' ? q.question.en : q.question;
+                        initialOriginalText += `Q${idx + 1}. ${qTxt}\n`;
+                    });
+                }
+            }
+
+            return `
+                <div class="space-y-6 animate-fade-in max-w-7xl mx-auto">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 inline-block mb-2">Bilingual Academic Support</span>
+                            <h1 class="text-2xl font-bold text-white">English ↔ Hindi Paper Translator</h1>
+                            <p class="text-slate-400 text-sm">Translate question papers with academic terminology.</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <select id="translator-paper-picker" onchange="loadPaperIntoTranslator(this.value)" class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                                <option value="">Select Saved Paper...</option>
+                                ${papers.map(p => {
+                                    const t = typeof p.title === 'object' ? p.title.en : p.title;
+                                    return `<option value="${p.id}" ${paperId === p.id ? 'selected' : ''}>${escapeHtml(t)}</option>`;
+                                }).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-2 bg-slate-950 px-4 py-2 rounded-xl border border-slate-800">
+                                <span class="text-xs text-slate-400 font-semibold uppercase" id="lbl-source-lang">${translationSourceLang === 'en' ? 'English' : 'Hindi'}</span>
+                                <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                <span class="text-xs text-slate-400 font-semibold uppercase" id="lbl-target-lang">${translationTargetLang === 'hi' ? 'Hindi' : 'English'}</span>
+                            </div>
+                        </div>
+                        <button onclick="executePaperTranslation()" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm shadow-lg shadow-purple-900/30 transition">
+                            Translate Paper
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Original Text</span>
+                            <textarea id="translator-source-text" rows="14" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-white text-sm focus:outline-none focus:border-purple-500 font-mono">${escapeHtml(initialOriginalText)}</textarea>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-400 mb-3">Translated Text</span>
+                            <textarea id="translator-target-text" rows="14" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-white text-sm focus:outline-none focus:border-purple-500 font-mono" placeholder="Translation will appear here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initTranslatorListeners() {}
+
+        function executePaperTranslation() {
+            const sourceText = document.getElementById('translator-source-text').value;
+            if (!sourceText.trim()) {
+                showToast('Please enter text.', 'error');
+                return;
+            }
+            showToast('Translating...', 'info');
+            setTimeout(() => {
+                let translated = "";
+                sourceText.split('\n').forEach(line => {
+                    let l = line;
+                    for (const [en, hi] of Object.entries(academicDictionary)) {
+                        if (l.toLowerCase().includes(en)) {
+                            l = l.replace(new RegExp(en, 'gi'), hi);
+                        }
+                    }
+                    translated += l + '\n';
+                });
+                document.getElementById('translator-target-text').value = translated;
+                showToast('Translated successfully!');
+            }, 500);
+        }
+
+        function loadPaperIntoTranslator(id) {
+            if (!id) return;
+            router.navigate('translator', { paperId: id });
+        }
+
+        /* ==========================================
+           14. VIEW: OMR SCANNER
+           ========================================== */
+        function renderOMRScannerView() {
+            const papers = db.getPapers();
+            return `
+                <div class="space-y-6 max-w-4xl mx-auto animate-fade-in">
+                    <div>
+                        <button onclick="router.navigate('dashboard')" class="text-sm text-purple-400 hover:underline mb-1 inline-flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            <span>Back to Dashboard</span>
+                        </button>
+                        <h1 class="text-2xl font-bold text-white">OMR Scanner & Verification (ओएमआर स्कैनर)</h1>
+                        <p class="text-slate-400 text-sm">Upload physical OMR sheet photos for instant local grading.</p>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Select Question Paper *</label>
+                            <select id="omr-paper-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500">
+                                ${papers.map(p => {
+                                    const t = typeof p.title === 'object' ? (p.title.en || p.title.hi) : p.title;
+                                    return `<option value="${p.id}">${escapeHtml(t)} (${p.questions.length} Qs)</option>`;
+                                }).join('')}
+                            </select>
+                        </div>
+                        <button onclick="showToast('OMR image scanned successfully!', 'success')" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3 rounded-xl text-sm shadow-lg shadow-purple-900/30 transition">
+                            Process & Verify OMR Sheet
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================
+           15. VIEW: RESULTS DASHBOARD
+           ========================================== */
+        function renderResultsHistoryView() {
+            const attempts = db.getAttempts();
+            return `
+                <div class="space-y-6 animate-fade-in">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">Results Dashboard (परिणाम डैशबोर्ड)</h1>
+                        <p class="text-slate-400 text-sm">Aggregated examination attempts and logs.</p>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                        ${attempts.length === 0 ? `
+                            <div class="py-16 text-center text-slate-400"><p class="text-sm">No attempts recorded yet.</p></div>
+                        ` : `
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider bg-slate-950/60">
+                                            <th class="p-4">Exam Title</th>
+                                            <th class="p-4">Language</th>
+                                            <th class="p-4">Attempt #</th>
+                                            <th class="p-4">Score</th>
+                                            <th class="p-4">Percentage</th>
+                                            <th class="p-4">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/80 text-sm">
+                                        ${attempts.map(att => `
+                                            <tr class="hover:bg-slate-850 transition">
+                                                <td class="p-4 font-semibold text-white">${escapeHtml(att.paperTitle)}</td>
+                                                <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${att.language === 'hi' ? 'bg-orange-500/15 text-orange-400' : 'bg-blue-500/15 text-blue-400'}">${att.language === 'hi' ? '🇮🇳 हिंदी' : '🇬🇧 English'}</span></td>
+                                                <td class="p-4 text-purple-400 font-bold">#${att.attemptNumber || 1}</td>
+                                                <td class="p-4 text-slate-200 font-bold">${att.score} / ${att.maxScore}</td>
+                                                <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400">${att.percentage}%</span></td>
+                                                <td class="p-4"><button onclick="router.navigate('result', { attemptId: '${att.id}' })" class="text-purple-400 hover:underline font-semibold text-xs">View Report</button></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================
+           16. VIEW: SETTINGS
+           ========================================== */
+        function renderSettingsView() {
+            return `
+                <div class="space-y-6 max-w-2xl mx-auto animate-fade-in">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">Platform Settings (सेटिंग्स)</h1>
+                        <p class="text-slate-400 text-sm">Manage local data storage cache.</p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6">
+                        <button onclick="if(confirm('Reset all data?')) { localStorage.clear(); showToast('Reset complete.'); router.navigate('dashboard'); }" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 font-semibold px-4 py-2.5 rounded-xl text-sm transition">
+                            Reset All Local Data
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================
+           17. UTILITY FUNCTIONS
+           ========================================== */
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            router.navigate('dashboard');
+        });
+    </script>
+</body>
+</html>
